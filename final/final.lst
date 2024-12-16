@@ -1,0 +1,289 @@
+     1                                 %line 8+1 final.asm
+     2                                 
+     3                                 %line 16+1 final.asm
+     4                                 
+     5                                 [section .bss]
+     6 00000000 <gap>                  buffer resb 10
+     7 0000000A <gap>                  num1 resb 1
+     8 0000000B <gap>                  num2 resb 1
+     9 0000000C <gap>                  num3 resb 1
+    10 0000000D <gap>                  num4 resb 1
+    11 0000000E <gap>                  num5 resb 1
+    12 0000000F <gap>                  total resb 1
+    13 00000010 <gap>                  result resb 10
+    14                                 
+    15 0000001A <gap>                  sym1 resb 1
+    16 0000001B <gap>                  sym2 resb 1
+    17 0000001C <gap>                  sym3 resb 1
+    18 0000001D <gap>                  sym4 resb 1
+    19                                 
+    20                                 [section .data]
+    21                                 LF equ 10
+    22                                 NULL equ 0
+    23 00000000 456E746572204F7065-    msg db "Enter Operation String: "
+    24 00000000 726174696F6E205374-
+    25 00000000 72696E673A20       
+    26 00000018 203D20                 equal db " = "
+    27 0000001B 30300A                 ascii db "00", 10
+    28                                 
+    29                                 [section .text]
+    30                                 [global _start]
+    31                                 
+    32                                 _start:
+    33                                 
+    34                                 
+    35                                 
+    36                                 
+    37 00000000 48C7C001000000          mov rax, 1
+    38                                 %line 47+0 final.asm
+    39 00000007 48C7C701000000          mov rdi, 1
+    40 0000000E 48C7C6[00000000]        mov rsi, msg
+    41 00000015 48C7C218000000          mov rdx, 24
+    42 0000001C 0F05                    syscall
+    43                                 %line 48+1 final.asm
+    44                                 
+    45 0000001E 48C7C000000000          mov rax, 0
+    46                                 %line 49+0 final.asm
+    47 00000025 48C7C700000000          mov rdi, 0
+    48 0000002C 48C7C6[00000000]        mov rsi, buffer
+    49 00000033 48C7C20A000000          mov rdx, 10
+    50 0000003A 0F05                    syscall
+    51                                 %line 50+1 final.asm
+    52                                 
+    53 0000003C 8A0425[00000000]        mov al, byte[buffer+0]
+    54 00000043 240F                    and al, 0f
+    55 00000045 880425[00000000]        mov byte[num1], al
+    56                                 
+    57 0000004C 8A0425[02000000]        mov al, byte[buffer+2]
+    58 00000053 240F                    and al, 0f
+    59 00000055 880425[00000000]        mov byte[num2], al
+    60                                 
+    61 0000005C 8A0425[04000000]        mov al, byte[buffer+4]
+    62 00000063 240F                    and al, 0f
+    63 00000065 880425[00000000]        mov byte[num3], al
+    64                                 
+    65 0000006C 8A0425[06000000]        mov al, byte[buffer+6]
+    66 00000073 240F                    and al, 0f
+    67 00000075 880425[00000000]        mov byte[num4], al
+    68                                 
+    69 0000007C 8A0425[08000000]        mov al, byte[buffer+8]
+    70 00000083 240F                    and al, 0f
+    71 00000085 880425[00000000]        mov byte[num5], al
+    72                                 
+    73 0000008C 8A0425[01000000]        mov al, byte[buffer+1]
+    74 00000093 880425[00000000]        mov byte[sym1], al
+    75                                 
+    76 0000009A 8A0425[03000000]        mov al, byte[buffer+3]
+    77 000000A1 880425[00000000]        mov byte[sym2], al
+    78                                 
+    79 000000A8 8A0425[05000000]        mov al, byte[buffer+5]
+    80 000000AF 880425[00000000]        mov byte[sym3], al
+    81                                 
+    82 000000B6 8A0425[07000000]        mov al, byte[buffer+7]
+    83 000000BD 880425[00000000]        mov byte[sym4], al
+    84                                 
+    85 000000C4 8A0425[00000000]        mov al, byte[num1]
+    86 000000CB 880425[00000000]        mov byte[total], al
+    87                                 
+    88                                 
+    89 000000D2 803C25[00000000]2B      cmp byte[sym1], '+'
+    90 000000DA 7513                    jne skip11
+    91 000000DC 408A3C25[00000000]      mov dil, byte[total]
+    92 000000E4 408A3425[00000000]      mov sil, byte[num2]
+    93 000000EC E846020000              call addition
+    94                                 
+    95                                 skip11:
+    96 000000F1 803C25[00000000]2D      cmp byte[sym1], '-'
+    97 000000F9 7513                    jne skip12
+    98 000000FB 408A3C25[00000000]      mov dil, byte[total]
+    99 00000103 408A3425[00000000]      mov sil, byte[num2]
+   100 0000010B E835020000              call subtraction
+   101                                 
+   102                                 skip12:
+   103 00000110 803C25[00000000]2A      cmp byte[sym1], '*'
+   104 00000118 7513                    jne skip13
+   105 0000011A 408A3C25[00000000]      mov dil, byte[total]
+   106 00000122 408A3425[00000000]      mov sil, byte[num2]
+   107 0000012A E824020000              call multiplication
+   108                                 
+   109                                 skip13:
+   110 0000012F 803C25[00000000]2F      cmp byte[sym1], '/'
+   111 00000137 750E                    jne skip14
+   112 00000139 408A3C25[00000000]      mov dil, byte[total]
+   113 00000141 408A3425[00000000]      mov sil, byte[num2]
+   114                                 
+   115                                 
+   116                                 
+   117                                 skip14:
+   118 00000149 803C25[00000000]2B      cmp byte[sym2], '+'
+   119 00000151 7513                    jne skip15
+   120 00000153 408A3C25[00000000]      mov dil, byte[total]
+   121 0000015B 408A3425[00000000]      mov sil, byte[num3]
+   122 00000163 E8CF010000              call addition
+   123                                 
+   124                                 skip15:
+   125 00000168 803C25[00000000]2D      cmp byte[sym2], '-'
+   126 00000170 7513                    jne skip16
+   127 00000172 408A3C25[00000000]      mov dil, byte[total]
+   128 0000017A 408A3425[00000000]      mov sil, byte[num3]
+   129 00000182 E8BE010000              call subtraction
+   130                                 
+   131                                 skip16:
+   132 00000187 803C25[00000000]2A      cmp byte[sym2], '*'
+   133 0000018F 7513                    jne skip17
+   134 00000191 408A3C25[00000000]      mov dil, byte[total]
+   135 00000199 408A3425[00000000]      mov sil, byte[num3]
+   136 000001A1 E8AD010000              call multiplication
+   137                                 
+   138                                 skip17:
+   139 000001A6 803C25[00000000]2F      cmp byte[sym2], '/'
+   140 000001AE 7513                    jne skip18
+   141 000001B0 408A3C25[00000000]      mov dil, byte[total]
+   142 000001B8 408A3425[00000000]      mov sil, byte[num3]
+   143 000001C0 E89C010000              call division
+   144                                 
+   145                                 
+   146                                 skip18:
+   147 000001C5 803C25[00000000]2B      cmp byte[sym3], '+'
+   148 000001CD 7513                    jne skip19
+   149 000001CF 408A3C25[00000000]      mov dil, byte[total]
+   150 000001D7 408A3425[00000000]      mov sil, byte[num4]
+   151 000001DF E853010000              call addition
+   152                                 
+   153                                 skip19:
+   154 000001E4 803C25[00000000]2D      cmp byte[sym3], '-'
+   155 000001EC 7513                    jne skip20
+   156 000001EE 408A3C25[00000000]      mov dil, byte[total]
+   157 000001F6 408A3425[00000000]      mov sil, byte[num4]
+   158 000001FE E842010000              call subtraction
+   159                                 
+   160                                 skip20:
+   161 00000203 803C25[00000000]2A      cmp byte[sym3], '*'
+   162 0000020B 7513                    jne skip21
+   163 0000020D 408A3C25[00000000]      mov dil, byte[total]
+   164 00000215 408A3425[00000000]      mov sil, byte[num4]
+   165 0000021D E831010000              call multiplication
+   166                                 
+   167                                 skip21:
+   168 00000222 803C25[00000000]2F      cmp byte[sym3], '/'
+   169 0000022A 7513                    jne skip22
+   170 0000022C 408A3C25[00000000]      mov dil, byte[total]
+   171 00000234 408A3425[00000000]      mov sil, byte[num4]
+   172 0000023C E820010000              call division
+   173                                 
+   174                                 
+   175                                 skip22:
+   176 00000241 803C25[00000000]2B      cmp byte[sym4], '+'
+   177 00000249 7513                    jne skip23
+   178 0000024B 408A3C25[00000000]      mov dil, byte[total]
+   179 00000253 408A3425[00000000]      mov sil, byte[num5]
+   180 0000025B E8D7000000              call addition
+   181                                 
+   182                                 skip23:
+   183 00000260 803C25[00000000]2D      cmp byte[sym4], '-'
+   184 00000268 7513                    jne skip24
+   185 0000026A 408A3C25[00000000]      mov dil, byte[total]
+   186 00000272 408A3425[00000000]      mov sil, byte[num5]
+   187 0000027A E8C6000000              call subtraction
+   188                                 
+   189                                 skip24:
+   190 0000027F 803C25[00000000]2A      cmp byte[sym4], '*'
+   191 00000287 7513                    jne skip25
+   192 00000289 408A3C25[00000000]      mov dil, byte[total]
+   193 00000291 408A3425[00000000]      mov sil, byte[num5]
+   194 00000299 E8B5000000              call multiplication
+   195                                 
+   196                                 skip25:
+   197 0000029E 803C25[00000000]2F      cmp byte[sym4], '/'
+   198 000002A6 7513                    jne done
+   199 000002A8 408A3C25[00000000]      mov dil, byte[total]
+   200 000002B0 408A3425[00000000]      mov sil, byte[num5]
+   201 000002B8 E8A4000000              call division
+   202                                 
+   203                                 
+   204                                 done:
+   205                                 
+   206 000002BD 488D3425[00000000]      lea rsi, [result]
+   207 000002C5 488D3C25[00000000]      lea rdi, [total]
+   208 000002CD E89F000000              call toString
+   209                                 
+   210                                 
+   211 000002D2 48C7C001000000          mov rax, 1
+   212                                 %line 209+0 final.asm
+   213 000002D9 48C7C701000000          mov rdi, 1
+   214 000002E0 48C7C6[00000000]        mov rsi, buffer
+   215 000002E7 48C7C209000000          mov rdx, 9
+   216 000002EE 0F05                    syscall
+   217                                 %line 210+1 final.asm
+   218 000002F0 48C7C001000000          mov rax, 1
+   219                                 %line 210+0 final.asm
+   220 000002F7 48C7C701000000          mov rdi, 1
+   221 000002FE 48C7C6[00000000]        mov rsi, equal
+   222 00000305 48C7C203000000          mov rdx, 3
+   223 0000030C 0F05                    syscall
+   224                                 %line 211+1 final.asm
+   225 0000030E 48C7C001000000          mov rax, 1
+   226                                 %line 211+0 final.asm
+   227 00000315 48C7C701000000          mov rdi, 1
+   228 0000031C 48C7C6[00000000]        mov rsi, result
+   229 00000323 48C7C20A000000          mov rdx, 10
+   230 0000032A 0F05                    syscall
+   231                                 %line 212+1 final.asm
+   232                                 
+   233                                 
+   234 0000032C 48C7C03C000000          mov rax, 60
+   235 00000333 48C7C700000000          mov rdi, 0
+   236 0000033A 0F05                    syscall
+   237                                 
+   238                                 
+   239                                 addition:
+   240 0000033C 4088F8                  mov al, dil
+   241 0000033F 4000F0                  add al, sil
+   242 00000342 880425[00000000]        mov byte[total], al
+   243 00000349 C3                      ret
+   244                                 
+   245                                 subtraction:
+   246 0000034A 4088F8                  mov al, dil
+   247 0000034D 4028F0                  sub al, sil
+   248 00000350 880425[00000000]        mov byte[total], al
+   249 00000357 C3                      ret
+   250                                 
+   251                                 multiplication:
+   252 00000358 4088F8                  mov al, dil
+   253 0000035B 40F6E6                  mul sil
+   254 0000035E 880425[00000000]        mov byte[total], al
+   255 00000365 C3                      ret
+   256                                 
+   257                                 division:
+   258 00000366 4088F8                  mov al, dil
+   259 00000369 6698                    cbw
+   260 0000036B 40F6F6                  div sil
+   261 0000036E 880425[00000000]        mov byte[total], al
+   262 00000375 C3                      ret
+   263                                 
+   264                                 
+   265                                 toString:
+   266                                 
+   267 00000376 0FB607                  movzx eax, byte[rdi]
+   268 00000379 48C7C100000000          mov rcx, 0
+   269 00000380 BB0A000000              mov ebx, 10
+   270                                 divideLoop:
+   271 00000385 BA00000000              mov edx, 0
+   272 0000038A F7F3                    div ebx
+   273 0000038C 52                      push rdx
+   274 0000038D 48FFC1                  inc rcx
+   275 00000390 83F800                  cmp eax, 0
+   276 00000393 75EE                    jne divideLoop
+   277                                 
+   278                                 
+   279 00000395 4889F3                  mov rbx, rsi
+   280 00000398 48C7C700000000          mov rdi, 0
+   281                                 popLoop:
+   282 0000039F 58                      pop rax
+   283 000003A0 0430                    add al, "0"
+   284 000003A2 88043B                  mov byte [rbx+rdi], al
+   285 000003A5 48FFC7                  inc rdi
+   286 000003A8 E2F3                    loop popLoop
+   287 000003AA C6043B0A                mov byte [rbx+rdi], LF
+   288 000003AE C3                      ret
+   289                                 
