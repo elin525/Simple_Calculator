@@ -12,7 +12,7 @@ Supported operators:
 
 ---
 
-## 🧠 Features
+## Features
 
 - Accepts a 9-character expression: `a␕b␕c␕d␕e`, where:
   - `a, b, c, d, e` are single-digit integers (0–9)
